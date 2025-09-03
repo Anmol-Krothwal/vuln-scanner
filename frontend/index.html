@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <title>Vuln Scanner Lite</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">🔎 <b>Vuln Scanner</b> <span class="muted">Lite</span></div>
+      <div class="top-actions">
+        <button class="ghost" title="Toggle theme" onclick="toggleTheme()">🌓</button>
+        <button class="ghost" title="Print / Save PDF" onclick="window.print()">🖨️</button>
+        <button class="ghost" title="Import JSON report" onclick="document.getElementById('importFile').click()">📥</button>
+        <input type="file" id="importFile" accept="application/json" onchange="handleImport(event)" hidden />
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="left">
+        <div class="card">
+          <label for="url" class="lbl">Target URL</label>
+          <div class="row">
+            <input id="url" type="text" placeholder="https://example.com" onkeydown="if(event.key==='Enter') runScan()" />
+            <button id="scanBtn" onclick="runScan()">Scan</button>
+          </div>
+
+          <div class="row row-tools">
+            <div class="quick">
+              <span class="lbl sm">Quick test:</span>
+              <button class="chip" onclick="quick('https://example.com')">example.com</button>
+              <button class="chip" onclick="quick('http://neverssl.com/')">neverssl</button>
+              <button class="chip" onclick="quick('https://httpbin.org/anything?q=%3Cxss-test%3E')">XSS echo</button>
+              <button class="chip" onclick="quick('https://httpbin.org/cookies/set?demo=1')">cookies</button>
+            </div>
+            <div class="right-tools">
+              <input id="search" class="search" type="search" placeholder="Search findings…" oninput="searchFindings(this.value)" />
+              <button id="copyCurl" class="ghost" title="Copy cURL" onclick="copyCurl()">📋 cURL</button>
+              <button id="download" class="ghost" title="Export JSON" onclick="exportJSON()">⬇️ JSON</button>
+            </div>
+          </div>
+
+          <p class="hint">
+            Passive checks only: headers, cookies, TLS, open-redirect heuristic, light reflected XSS probe.
+          </p>
+        </div>
+
+        <div id="loading" class="loading hidden">
+          <div class="spinner"></div><div>Scanning…</div>
+        </div>
+
+        <div id="summary" class="summary hidden"></div>
+
+        <div id="filters" class="filters hidden">
+          <div class="chips">
+            <button class="filter active" onclick="setFilter('All')">All</button>
+            <button class="filter" onclick="setFilter('High')">High</button>
+            <button class="filter" onclick="setFilter('Medium')">Medium</button>
+            <button class="filter" onclick="setFilter('Low')">Low</button>
+          </div>
+          <div class="group-actions">
+            <button class="ghost" onclick="setAllGroups(true)">Expand all</button>
+            <button class="ghost" onclick="setAllGroups(false)">Collapse all</button>
+          </div>
+        </div>
+
+        <div id="results" class="results" onclick="maybeToggleGroup(event)"></div>
+      </section>
+
+      <aside class="right">
+        <div class="card">
+          <div class="row-between">
+            <h3 class="m0">Recent scans</h3>
+            <button class="ghost sm" onclick="clearHistory()">Clear</button>
+          </div>
+          <div id="history" class="history"></div>
+        </div>
+
+        <div class="card">
+          <h3 class="m0">Offline demo target</h3>
+          <p class="hint">Works even without internet.</p>
+          <button class="full" onclick="quick('http://127.0.0.1:8000/debug/mock')">Scan local demo</button>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="foot">
+      <small class="muted">For educational use. Only scan systems you own or have permission to test.</small>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Cache-bust with a query to ensure the new JS loads -->
+  <script src="./app.js?v=3"></script>
+</body>
+</html>

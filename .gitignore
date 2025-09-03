@@ -1,0 +1,11 @@
+# Python / backend
+backend/venv/
+__pycache__/
+*.pyc
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+
+# Node/other (just in case)
+node_modules/
