@@ -18,7 +18,7 @@ A clean, **web-based passive scanner** (Flask + vanilla JS) that checks common w
 
 | Home | Dark Theme | Light Theme |
 |:---:|:---:|:---:|
-| ![Home](assets/homepage.png) | ![Dark Theme](assets/darktheme.png) | ![Light Theme](assets/lighttheme.png) |
+| ![Home](assets/Homepage.png) | ![Dark Theme](assets/darktheme.png) | ![Light Theme](assets/lighttheme.png) |
 
 ---
 
@@ -190,4 +190,4 @@ Do not scan targets without authorization. You are responsible for your use.
 
 MIT © 2025 Anmol Krothwal — see LICENSE.
 
-If you already created images with the other names (`home.png`, `report.png`, `theme.png`), either **rename the files** to the three names used above **or** change the README links to match your actual filenames.
+
